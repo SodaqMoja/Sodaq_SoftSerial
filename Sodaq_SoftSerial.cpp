@@ -35,13 +35,20 @@ http://arduiniana.org.
 #define _DEBUG 0
 #define _DEBUG_PIN1 11
 #define _DEBUG_PIN2 13
+
+#ifndef GCC_VERSION
+#define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
+#endif
+
 // 
 // Includes
 // 
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
 #include <Arduino.h>
-#include <Sodaq_SoftSerial.h>
+
+#include "Sodaq_SoftSerial.h"
+
 //
 // Lookup table
 //
@@ -125,7 +132,7 @@ const int XMIT_START_ADJUSTMENT = 6;
 
 #else
 
-#error This version of SoftwareSerial supports only 20, 16 and 8MHz processors
+#error "This version of SoftwareSerial supports only 20, 16 and 8MHz processors"
 
 #endif
 
@@ -134,8 +141,8 @@ const int XMIT_START_ADJUSTMENT = 6;
 //
 SoftwareSerial *SoftwareSerial::active_object = 0;
 char SoftwareSerial::_receive_buffer[_SS_MAX_RX_BUFF]; 
-volatile uint8_t SoftwareSerial::_receive_buffer_tail = 0;
-volatile uint8_t SoftwareSerial::_receive_buffer_head = 0;
+volatile uint8_t SoftwareSerial::_receive_buffer_tail = 0;      // TODO Is volatile useful for this?
+volatile uint8_t SoftwareSerial::_receive_buffer_head = 0;      // TODO Is volatile useful for this?
 
 //
 // Debugging
@@ -161,7 +168,8 @@ inline void DebugPulse(uint8_t pin, uint8_t count)
 //
 
 /* static */ 
-inline void SoftwareSerial::tunedDelay(uint16_t delay) { 
+inline void SoftwareSerial::tunedDelay(uint16_t delay)
+{
   uint8_t tmp=0;
 
   asm volatile("sbiw    %0, 0x01 \n\t"
@@ -224,8 +232,10 @@ void SoftwareSerial::recv()
     tunedDelay(_rx_delay_centering);
     DebugPulse(_DEBUG_PIN2, 1);
 
-    // Read each of the 8 bits
-    for (uint8_t i=0x1; i; i <<= 1)
+    // We're in the middle of the start bit
+
+    // Read each of the 8 bits, starting with the LSB
+    for (uint8_t i = 0x1; i; i <<= 1)
     {
       tunedDelay(_rx_delay_intrabit);
       DebugPulse(_DEBUG_PIN2, 1);
@@ -236,7 +246,7 @@ void SoftwareSerial::recv()
         d &= noti;
     }
 
-    // skip the stop bit
+    // skip the stop bit(s)
     tunedDelay(_rx_delay_stopbit);
     DebugPulse(_DEBUG_PIN2, 1);
 
@@ -252,9 +262,7 @@ void SoftwareSerial::recv()
     } 
     else 
     {
-#if _DEBUG // for scope: pulse pin as overflow indictator
       DebugPulse(_DEBUG_PIN1, 1);
-#endif
       _buffer_overflow = true;
     }
   }

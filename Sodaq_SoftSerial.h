@@ -40,9 +40,6 @@ http://arduiniana.org.
 ******************************************************************************/
 
 #define _SS_MAX_RX_BUFF 64 // RX buffer size
-#ifndef GCC_VERSION
-#define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
-#endif
 
 class SoftwareSerial : public Stream
 {
@@ -99,14 +96,5 @@ public:
   // public only for easy access by interrupt handlers
   static inline void handle_interrupt();
 };
-
-// Arduino 0012 workaround
-#undef int
-#undef char
-#undef long
-#undef byte
-#undef float
-#undef abs
-#undef round
 
 #endif
