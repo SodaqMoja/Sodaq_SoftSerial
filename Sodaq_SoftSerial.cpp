@@ -41,7 +41,7 @@ http://arduiniana.org.
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
 #include <Arduino.h>
-#include <SoftwareSerial.h>
+#include <Sodaq_SoftSerial.h>
 //
 // Lookup table
 //
