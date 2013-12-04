@@ -34,7 +34,7 @@
  
  */
 
-#include <SoftwareSerial.h>
+#include <Sodaq_SoftSerial.h>
 // software serial #1: TX = digital pin 10, RX = digital pin 11
 SoftwareSerial portOne(10,11);
 
@@ -85,9 +85,3 @@ void loop()
   // blank line to separate data from the two ports:
   Serial.println();
 }
-
-
-
-
-
-

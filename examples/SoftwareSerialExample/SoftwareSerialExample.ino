@@ -25,7 +25,7 @@
  This example code is in the public domain.
  
  */
-#include <SoftwareSerial.h>
+#include <Sodaq_SoftSerial.h>
 
 SoftwareSerial mySerial(10, 11); // RX, TX
 
@@ -52,4 +52,3 @@ void loop() // run over and over
   if (Serial.available())
     mySerial.write(Serial.read());
 }
-

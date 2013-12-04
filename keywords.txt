@@ -1,12 +1,12 @@
 #######################################
-# Syntax Coloring Map for NewSoftSerial
+# Syntax Coloring Map for Sodaq_SoftSerial
 #######################################
 
 #######################################
 # Datatypes (KEYWORD1)
 #######################################
 
-NewSoftSerial	KEYWORD1
+Sodaq_SoftSerial	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
