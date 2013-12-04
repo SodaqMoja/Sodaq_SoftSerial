@@ -450,42 +450,28 @@ size_t SoftwareSerial::write(uint8_t b)
     return 0;
   }
 
+  uint8_t zero = _inverse_logic ? HIGH : LOW;
+  uint8_t one = _inverse_logic ? LOW : HIGH;
+
   uint8_t oldSREG = SREG;
   cli();  // turn off interrupts for a clean txmit
 
   // Write the start bit
-  tx_pin_write(_inverse_logic ? HIGH : LOW);
+  tx_pin_write(zero);
   tunedDelay(_tx_delay + XMIT_START_ADJUSTMENT);
 
   // Write each of the 8 bits
-  if (_inverse_logic)
-  {
-    for (byte mask = 0x01; mask; mask <<= 1)
-    {
-      if (b & mask) // choose bit
-        tx_pin_write(LOW); // send 1
-      else
-        tx_pin_write(HIGH); // send 0
-    
-      tunedDelay(_tx_delay);
-    }
+  for (byte mask = 0x01; mask; mask <<= 1) {
+    if (b & mask) // choose bit
+      tx_pin_write(one); // send 1
+    else
+      tx_pin_write(zero); // send 0
 
-    tx_pin_write(LOW); // restore pin to natural state
+    tunedDelay(_tx_delay);
   }
-  else
-  {
-    for (byte mask = 0x01; mask; mask <<= 1)
-    {
-      if (b & mask) // choose bit
-        tx_pin_write(HIGH); // send 1
-      else
-        tx_pin_write(LOW); // send 0
-    
-      tunedDelay(_tx_delay);
-    }
 
-    tx_pin_write(HIGH); // restore pin to natural state
-  }
+  // Stop bit
+  tx_pin_write(one); // restore pin to natural state
 
   SREG = oldSREG; // turn interrupts back on
   tunedDelay(_tx_delay);
