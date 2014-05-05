@@ -141,8 +141,8 @@ const int XMIT_START_ADJUSTMENT = 6;
 //
 SoftwareSerial *SoftwareSerial::active_object = 0;
 char SoftwareSerial::_receive_buffer[_SS_MAX_RX_BUFF]; 
-volatile uint8_t SoftwareSerial::_receive_buffer_tail = 0;      // TODO Is volatile useful for this?
-volatile uint8_t SoftwareSerial::_receive_buffer_head = 0;      // TODO Is volatile useful for this?
+uint8_t SoftwareSerial::_receive_buffer_tail = 0;
+uint8_t SoftwareSerial::_receive_buffer_head = 0;
 
 //
 // Debugging
