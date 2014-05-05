@@ -47,6 +47,7 @@ http://arduiniana.org.
 #include <avr/pgmspace.h>
 #include <Arduino.h>
 
+#include <Sodaq_PcInt.h>
 #include "Sodaq_SoftSerial.h"
 
 //
@@ -301,41 +302,13 @@ uint8_t SoftwareSerial::rx_pin_read()
 //
 
 /* static */
-inline void SoftwareSerial::handle_interrupt()
+void SoftwareSerial::handle_interrupt()
 {
   if (active_object)
   {
     active_object->recv();
   }
 }
-
-#if defined(PCINT0_vect)
-ISR(PCINT0_vect)
-{
-  SoftwareSerial::handle_interrupt();
-}
-#endif
-
-#if defined(PCINT1_vect)
-ISR(PCINT1_vect)
-{
-  SoftwareSerial::handle_interrupt();
-}
-#endif
-
-#if defined(PCINT2_vect)
-ISR(PCINT2_vect)
-{
-  SoftwareSerial::handle_interrupt();
-}
-#endif
-
-#if defined(PCINT3_vect)
-ISR(PCINT3_vect)
-{
-  SoftwareSerial::handle_interrupt();
-}
-#endif
 
 //
 // Constructor
@@ -406,8 +379,7 @@ void SoftwareSerial::begin(long speed)
   {
     if (digitalPinToPCICR(_receivePin))
     {
-      *digitalPinToPCICR(_receivePin) |= _BV(digitalPinToPCICRbit(_receivePin));
-      *digitalPinToPCMSK(_receivePin) |= _BV(digitalPinToPCMSKbit(_receivePin));
+      PcInt::attachInterrupt(_receivePin, handle_interrupt);
     }
     tunedDelay(_tx_delay); // if we were low this establishes the end
   }

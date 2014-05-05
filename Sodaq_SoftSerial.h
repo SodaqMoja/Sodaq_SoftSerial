@@ -72,6 +72,8 @@ private:
   void setTX(uint8_t transmitPin);
   void setRX(uint8_t receivePin);
 
+  static void handle_interrupt();
+
   // private static method for timing
   static inline void tunedDelay(uint16_t delay);
 
@@ -92,9 +94,6 @@ public:
   virtual void flush();
   
   using Print::write;
-
-  // public only for easy access by interrupt handlers
-  static inline void handle_interrupt();
 };
 
 #endif
