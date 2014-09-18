@@ -459,15 +459,11 @@ size_t SoftwareSerial::write(uint8_t b)
   return 1;
 }
 
+// Flush the output buffer.
 void SoftwareSerial::flush()
 {
-  if (!isListening())
-    return;
-
-  uint8_t oldSREG = SREG;
-  cli();
-  _receive_buffer_head = _receive_buffer_tail = 0;
-  SREG = oldSREG;
+  // No need to do anything. A write() takes effect immediately.
+  // There is no output buffer.
 }
 
 int SoftwareSerial::peek()
