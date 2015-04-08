@@ -39,7 +39,7 @@ http://arduiniana.org.
 * Definitions
 ******************************************************************************/
 
-#define _SS_MAX_RX_BUFF 250 // RX buffer size
+#define _SS_MAX_RX_BUFF 300 // RX buffer size
 
 class SoftwareSerial : public Stream
 {
@@ -64,8 +64,8 @@ private:
 
   // static data
   static char _receive_buffer[_SS_MAX_RX_BUFF]; 
-  static uint8_t _receive_buffer_tail;
-  static uint8_t _receive_buffer_head;
+  static uint16_t _receive_buffer_tail;
+  static uint16_t _receive_buffer_head;
   static SoftwareSerial *active_object;
 
   // private methods

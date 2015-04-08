@@ -55,9 +55,9 @@ http://arduiniana.org.
 // Statics
 //
 SoftwareSerial *SoftwareSerial::active_object;
-char SoftwareSerial::_receive_buffer[_SS_MAX_RX_BUFF]; 
-uint8_t SoftwareSerial::_receive_buffer_tail;
-uint8_t SoftwareSerial::_receive_buffer_head;
+char SoftwareSerial::_receive_buffer[_SS_MAX_RX_BUFF];
+uint16_t SoftwareSerial::_receive_buffer_tail;
+uint16_t SoftwareSerial::_receive_buffer_head;
 
 //
 // Debugging
@@ -178,7 +178,7 @@ inline void SoftwareSerial::recv()
       d = ~d;
 
     // if buffer full, set the overflow flag and return
-    uint8_t next = (_receive_buffer_tail + 1) % _SS_MAX_RX_BUFF;
+    uint16_t next = (_receive_buffer_tail + 1) % _SS_MAX_RX_BUFF;
     if (next != _receive_buffer_head)
     {
       // save new data in buffer: tail points to where byte goes
