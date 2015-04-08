@@ -159,7 +159,7 @@ inline void SoftwareSerial::recv()
     disableRxInt();
 
     // Wait approximately 1/2 of a bit width to "center" the sample
-    tunedDelay(_rx_delay_centering - 30);
+    tunedDelay(_rx_delay_centering - 10);
     DebugPulse(_DEBUG_PIN2, 1);
 
     // We're in the middle of the start bit
