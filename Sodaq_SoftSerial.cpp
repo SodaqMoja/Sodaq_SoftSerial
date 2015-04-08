@@ -368,14 +368,6 @@ void SoftwareSerial::begin(long speed)
   listen();
 }
 
-void SoftwareSerial::setRxIntMsk(bool enable)
-{
-    if (enable)
-      *_pcint_maskreg |= _pcint_maskvalue;
-    else
-      *_pcint_maskreg &= ~_pcint_maskvalue;
-}
-
 void SoftwareSerial::end()
 {
   stopListening();

@@ -76,7 +76,6 @@ private:
   void setRX(uint8_t receivePin);
   void disableRxInt() { *_pcint_maskreg &= ~_pcint_maskvalue; }
   void enableRxInt() { *_pcint_maskreg |= _pcint_maskvalue; }
-  void setRxIntMsk(bool enable) __attribute__((__always_inline__));
 
   // Return num - sub, or 1 if the result would be < 1
   static uint16_t subtract_cap(uint16_t num, uint16_t sub);
